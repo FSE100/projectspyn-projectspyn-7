@@ -2,21 +2,32 @@ global key
 InitKeyboard();
 while 1
     pause(0.01);
-    switch key
+    ,switch key
         case 'w' % auto
+            while 1
             while brick.UltrasonicDist(3) < 50 && brick.TouchPressed(1) == 0 
                 brick.MoveMotor('C', 50);
-                brick.MoveMotor('D', 50);   
+                brick.MoveMotor('D', 50);
             end
-            while brick.UltrasonicDist(3) > 70 && brick.TouchPressed(1) == 0
+            if brick.UltrasonicDist(3) > 70 && brick.TouchPressed(1) == 0
                 brick.MoveMotor('C', 45);
-                brick.MoveMotor('D', 10);
+                brick.MoveMotor('D', -10);
+                pause(1.6)
+                brick.MoveMotor('C', 50);
+                brick.MoveMotor('D', 50);
+                pause(2.5)
             end
-            if (brick.TouchPressed == 0)
-                
-            end
+            if brick.TouchPressed(1) == 1
+                brick.MoveMotor('C', -25);
+                brick.MoveMotor('D', -25);
+                pause(2)
+                brick.MoveMotor('C', -10);
+                brick.MoveMotor('D', 45);
+                pause(2.1)
+           end
                 brick.StopMotor('D');
-                brick.StopMotor('C');
+                brick.StopMotor('C'); 
+            end
         case 'uparrow' % move forward
             brick.MoveMotor('C', 50);
             brick.MoveMotor('D', 50);
