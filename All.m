@@ -1,7 +1,6 @@
 global key
 InitKeyboard();
 brick.SetColorMode(1, 2); %Set Color Sensor connected on port 1 to Color Code Mode
-color_rgb = brick.ColorRGB(1); %Get Color on port 2
 while 1
     pause(0.01);
     switch key
@@ -10,13 +9,8 @@ while 1
             while brick.UltrasonicDist(3) < 50 && brick.TouchPressed(2) == 0
                 brick.MoveMotor('C', 50); %Forward
                 brick.MoveMotor('D', 50);
-                count=0;
-                disp((color_rgb));
-                while (color_rgb(1) == 5)
-                   count = count + 1;
-                   disp((color_rgb));
-                end
-                if (count >= 3)
+                color_rgb(1) = brick.ColorCode(1); %Get Color on port 2
+                if ( color_rgb(1) == 5)
                 brick.StopMotor('C')
                 brick.StopMotor('D')
                 pause(4)
@@ -25,12 +19,8 @@ while 1
                 brick.MoveMotor('D', 30)
                 pause(2)
                 end
-                count1 = 0;
-                while (color_rgb(1) == 2 || color_rgb(1) == 3)
-                    disp((color_rgb));
-                    count1 = count1 +1; 
-                end
-                if (count1 >= 3)
+                if (color_rgb(1) == 2 || color_rgb(1) == 3 )
+                brick.playTone(200, 800, 500);
                 brick.StopMotor('D');
                 brick.StopMotor('C');
                 pause(50);
@@ -48,6 +38,7 @@ while 1
                 brick.MoveMotor('C', -30); %Backward
                 brick.MoveMotor('D', -30);
                 pause(2)
+                color_rgb(1) = brick.ColorCode(1); %Get Color on port 2
                 if color_rgb(1) == 2 || color_rgb(1) == 3
                     brick.StopMotor('D');
                     brick.StopMotor('C');
